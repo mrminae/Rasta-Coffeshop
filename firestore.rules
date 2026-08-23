@@ -1,0 +1,139 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function isSuperAdmin() {
+      return isAuthenticated() && getUserData().role == 'super_admin';
+    }
+
+    function isShopStaff(shopId) {
+      return isAuthenticated() && (
+        getUserData().role == 'super_admin' ||
+        (getUserData().coffeeShopId == shopId && (
+          getUserData().role == 'shop_owner' ||
+          getUserData().role == 'shop_manager' ||
+          getUserData().role == 'staff'
+        ))
+      );
+    }
+
+    function isShopManager(shopId) {
+      return isAuthenticated() && (
+        getUserData().role == 'super_admin' ||
+        (getUserData().coffeeShopId == shopId && (
+          getUserData().role == 'shop_owner' ||
+          getUserData().role == 'shop_manager'
+        ))
+      );
+    }
+
+    // Users
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId) || isSuperAdmin();
+    }
+
+    // Coffee Shops (Public read, Manager write)
+    match /coffeeShops/{shopId} {
+      allow read: if true;
+      allow write: if isShopManager(shopId) || isSuperAdmin();
+    }
+
+    // Branches (Public read, Manager write)
+    match /branches/{branchId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // Categories (Public read, Manager write)
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // Products (Public read, Manager write)
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // Carts (User-isolated)
+    match /carts/{cartId} {
+      allow read, write: if true;
+    }
+
+    // Orders (Customer can create and view own, Staff can view and manage)
+    match /orders/{orderId} {
+      allow read: if true;
+      allow create: if true;
+      allow update: if true;
+      allow delete: if isAuthenticated();
+    }
+
+    // Coupons (Public read active, Manager write)
+    match /coupons/{couponId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // Coupon Usage
+    match /couponUsage/{usageId} {
+      allow read, write: if true;
+    }
+
+    // Favorites
+    match /favorites/{favoriteId} {
+      allow read, write: if true;
+    }
+
+    // Customer Addresses
+    match /addresses/{addressId} {
+      allow read, write: if true;
+    }
+
+    // Loyalty Accounts
+    match /loyaltyAccounts/{accountId} {
+      allow read, write: if true;
+    }
+
+    // Loyalty Transactions
+    match /loyaltyTransactions/{txId} {
+      allow read, write: if true;
+    }
+
+    // Notifications
+    match /notifications/{notifId} {
+      allow read, write: if true;
+    }
+
+    // Reviews
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create: if isAuthenticated();
+      allow update, delete: if isAuthenticated();
+    }
+
+    // Settings
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // Analytics
+    match /analytics/{docId} {
+      allow read, write: if isAuthenticated();
+    }
+  }
+}

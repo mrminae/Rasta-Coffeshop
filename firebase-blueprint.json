@@ -1,0 +1,143 @@
+{
+  "entities": {
+    "User": {
+      "collection": "users",
+      "fields": {
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "phoneNumber": { "type": "string" },
+        "role": { "type": "string", "enum": ["super_admin", "shop_owner", "shop_manager", "staff", "customer"] },
+        "coffeeShopId": { "type": "string" },
+        "branchId": { "type": "string" },
+        "createdAt": { "type": "string" }
+      }
+    },
+    "CoffeeShop": {
+      "collection": "coffeeShops",
+      "fields": {
+        "name": { "type": "string" },
+        "nameFa": { "type": "string" },
+        "slug": { "type": "string" },
+        "logoUrl": { "type": "string" },
+        "coverUrl": { "type": "string" },
+        "description": { "type": "string" },
+        "descriptionFa": { "type": "string" },
+        "phone": { "type": "string" },
+        "themeColor": { "type": "string" },
+        "currency": { "type": "string" },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      }
+    },
+    "Branch": {
+      "collection": "branches",
+      "fields": {
+        "coffeeShopId": { "type": "string" },
+        "name": { "type": "string" },
+        "nameFa": { "type": "string" },
+        "address": { "type": "string" },
+        "addressFa": { "type": "string" },
+        "phone": { "type": "string" },
+        "deliveryRadiusKm": { "type": "number" },
+        "minOrderAmount": { "type": "number" },
+        "pickupAvailable": { "type": "boolean" },
+        "deliveryAvailable": { "type": "boolean" },
+        "active": { "type": "boolean" }
+      }
+    },
+    "Category": {
+      "collection": "categories",
+      "fields": {
+        "coffeeShopId": { "type": "string" },
+        "name": { "type": "string" },
+        "nameFa": { "type": "string" },
+        "icon": { "type": "string" },
+        "sortOrder": { "type": "number" },
+        "active": { "type": "boolean" }
+      }
+    },
+    "Product": {
+      "collection": "products",
+      "fields": {
+        "coffeeShopId": { "type": "string" },
+        "categoryId": { "type": "string" },
+        "name": { "type": "string" },
+        "nameFa": { "type": "string" },
+        "description": { "type": "string" },
+        "descriptionFa": { "type": "string" },
+        "image": { "type": "string" },
+        "basePrice": { "type": "number" },
+        "compareAtPrice": { "type": "number" },
+        "active": { "type": "boolean" },
+        "available": { "type": "boolean" },
+        "featured": { "type": "boolean" },
+        "popular": { "type": "boolean" },
+        "isNew": { "type": "boolean" },
+        "preparationTime": { "type": "number" },
+        "ingredients": { "type": "array" },
+        "allergens": { "type": "array" },
+        "calories": { "type": "number" },
+        "tags": { "type": "array" },
+        "sortOrder": { "type": "number" }
+      }
+    },
+    "Order": {
+      "collection": "orders",
+      "fields": {
+        "orderNumber": { "type": "string" },
+        "coffeeShopId": { "type": "string" },
+        "branchId": { "type": "string" },
+        "customerId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "customerPhone": { "type": "string" },
+        "items": { "type": "array" },
+        "subtotal": { "type": "number" },
+        "discount": { "type": "number" },
+        "deliveryFee": { "type": "number" },
+        "tax": { "type": "number" },
+        "total": { "type": "number" },
+        "paymentStatus": { "type": "string" },
+        "paymentMethod": { "type": "string" },
+        "orderStatus": { "type": "string" },
+        "fulfillmentType": { "type": "string" },
+        "timestamps": { "type": "object" }
+      }
+    },
+    "Coupon": {
+      "collection": "coupons",
+      "fields": {
+        "coffeeShopId": { "type": "string" },
+        "code": { "type": "string" },
+        "discountType": { "type": "string" },
+        "discountValue": { "type": "number" },
+        "minOrderAmount": { "type": "number" },
+        "maxDiscountAmount": { "type": "number" },
+        "usageLimit": { "type": "number" },
+        "usedCount": { "type": "number" },
+        "active": { "type": "boolean" }
+      }
+    },
+    "LoyaltyAccount": {
+      "collection": "loyaltyAccounts",
+      "fields": {
+        "customerId": { "type": "string" },
+        "coffeeShopId": { "type": "string" },
+        "pointsBalance": { "type": "number" },
+        "lifetimePoints": { "type": "number" },
+        "tier": { "type": "string" }
+      }
+    },
+    "Notification": {
+      "collection": "notifications",
+      "fields": {
+        "customerId": { "type": "string" },
+        "coffeeShopId": { "type": "string" },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "read": { "type": "boolean" },
+        "type": { "type": "string" }
+      }
+    }
+  }
+}

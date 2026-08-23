@@ -1,0 +1,6 @@
+{
+  "name": "CoffeePlus Commerce Platform",
+  "description": "Multi-Tenant Coffee Shop SaaS Platform for online ordering, kitchen management, loyalty, AI recommendations, and merchant administration in Persian & English.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
